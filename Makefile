@@ -30,7 +30,7 @@ help:
 	@echo "  make refresh-docker-images           # refresh openmaptiles docker images from Docker HUB"
 	@echo "  make remove-docker-images            # remove openmaptiles docker images"
 	@echo "  make pgclimb-list-views              # list PostgreSQL public schema views"
-	@echo "  make pgclimb-list-tables             # list PostgreSQL public schema tabless"
+	@echo "  make pgclimb-list-tables             # list PostgreSQL public schema tables"
 	@echo "  cat  .env                            # list PG database and MIN_ZOOM and MAX_ZOOM informations"
 	@echo "  cat ./quickstart.log                 # backup  of the last ./quickstart.sh "
 	@echo "  make help                            # help about avaialable commands"
@@ -97,7 +97,7 @@ psql-vacuum-analyze:
 	docker-compose run --rm import-osm /usr/src/app/psql.sh  -P pager=off  -c 'VACUUM ANALYZE VERBOSE;'
 
 psql-analyze:
-	@echo "Start - postgresql: ANALYZE VERBOSE ;"
+	@echo "Start - postgresql: ANALYZE VERBOSE;"
 	docker-compose run --rm import-osm /usr/src/app/psql.sh  -P pager=off  -c 'ANALYZE VERBOSE;'
 
 import-sql-dev:
