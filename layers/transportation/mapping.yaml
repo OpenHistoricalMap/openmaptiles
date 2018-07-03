@@ -161,6 +161,12 @@ tables:
     - *service
     - *usage
     - *public_transport
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     mapping:
       highway:
       - motorway
@@ -219,6 +225,12 @@ tables:
     - *area
     - *service
     - *usage
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     mapping:
       railway:
       - rail
@@ -255,6 +267,12 @@ tables:
     - *area
     - *service
     - *usage
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     mapping:
       aerialway:
       - cable_car
@@ -284,6 +302,12 @@ tables:
     - *area
     - *service
     - *usage
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     mapping:
       route:
       - ferry
@@ -310,6 +334,12 @@ tables:
     - *public_transport
     - name: man_made
       key: man_made
+      type: string
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
       type: string
     mapping:
       highway:
@@ -341,6 +371,12 @@ tables:
     - *ref
     - *network
     - *name
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     mapping:
       route:
       - road

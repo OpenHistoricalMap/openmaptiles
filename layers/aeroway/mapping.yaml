@@ -62,6 +62,12 @@ tables:
       type: area
     - name: webmerc_area
       type: webmerc_area
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     mapping:
       aeroway: *aeroway_polygon_mapping
       "area:aeroway": *aeroway_polygon_mapping
@@ -77,6 +83,12 @@ tables:
       type: geometry
     - name: aeroway
       key: aeroway
+      type: string
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
       type: string
     mapping:
       aeroway:

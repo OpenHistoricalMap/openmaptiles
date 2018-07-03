@@ -47,6 +47,12 @@ tables:
     - name: min_level
       key: min_level
       type: string
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     mapping:
       building:part:
       - __any__
@@ -147,6 +153,12 @@ tables:
       from_member: true
     - name: type
       type: member_type
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     mapping:
       type: [street]
     type: relation_member
@@ -235,6 +247,12 @@ tables:
       from_member: true
     - name: type
       type: member_type
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     mapping:
       type: [associatedStreet]
     type: relation_member
@@ -323,6 +341,12 @@ tables:
       from_member: true
     - name: type
       type: member_type
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     mapping:
       type: [building]
     type: relation_member
@@ -387,6 +411,12 @@ tables:
       from_member: true
     - name: type
       type: member_type
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     mapping:
       type: [multipolygon]
     filters:

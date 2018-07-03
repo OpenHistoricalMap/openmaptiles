@@ -69,6 +69,12 @@ tables:
     - name: waterway
       key: waterway
       type: string
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     filters:
       reject:
         covered: ["yes"]

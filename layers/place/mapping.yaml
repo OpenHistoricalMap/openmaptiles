@@ -30,6 +30,12 @@ tables:
     - *name_de
     - name: tags
       type: hstore_tags
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     filters:
       require:
         name: ["__any__"]
@@ -60,6 +66,12 @@ tables:
       type: string
     - name: tags
       type: hstore_tags
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     filters:
       require:
         name: ["__any__"]
@@ -85,6 +97,12 @@ tables:
     - name: tags
       type: hstore_tags
     - *rank
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     filters:
       require:
         name: ["__any__"]
@@ -106,6 +124,12 @@ tables:
     - name: tags
       type: hstore_tags
     - *rank
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     filters:
       require:
         name: ["__any__"]
@@ -136,6 +160,12 @@ tables:
       key: ref
       type: string
     - *rank
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     filters:
       require:
         name: ["__any__"]
@@ -166,6 +196,12 @@ tables:
       name: capital
       type: string
     - *rank
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     filters:
       require:
         name: ["__any__"]

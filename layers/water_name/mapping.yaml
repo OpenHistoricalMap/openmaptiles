@@ -24,6 +24,12 @@ tables:
     - name: rank
       key: rank
       type: integer
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     filters:
       require:
         name: ["__any__"]

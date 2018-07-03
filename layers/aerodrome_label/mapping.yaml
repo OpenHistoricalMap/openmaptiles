@@ -37,6 +37,12 @@ tables:
     - name: ele
       key: ele
       type: string
+    - name: start_date
+      key: start_date
+      type: string
+    - name: end_date
+      key: end_date
+      type: string
     type_mappings:
       points:
         aeroway:
