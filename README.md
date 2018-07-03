@@ -133,6 +133,17 @@ you can limit the bounding box and zoom levels of what you want to generate (`do
 docker-compose run generate-vectortiles
 ```
 
+### Vector Tile Rendering
+
+Vector tiles can be rendered live using
+[`postserve`](https://github.com/openmaptiles/postserve) (which uses `ST_AsMVT`
+directly in PostGIS) or by using Mapnik:
+
+```bash
+npm install tessera @mapbox/tilelive-vector tilelive-tmsource tilelive-xray
+node_modules/.bin/tessera tmsource://./build/openmaptiles.tm2source
+```
+
 ## License
 
 All code in this repository is under the [BSD license](./LICENSE.md) and the cartography decisions encoded in the schema and SQL are licensed under [CC-BY](./LICENSE.md).
