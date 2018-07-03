@@ -97,10 +97,11 @@ docker-compose up -d postgres
 Import external data from [OpenStreetMapData](http://openstreetmapdata.com/), [Natural Earth](http://www.naturalearthdata.com/) and  [OpenStreetMap Lake Labels](https://github.com/lukasmartinelli/osm-lakelines).
 
 ```bash
-docker-compose run import-water
-docker-compose run import-natural-earth
-docker-compose run import-lakelines
-docker-compose run import-osmborder
+docker-compose run --rm import-water
+docker-compose run --rm import-natural-earth
+docker-compose run --rm import-lakelines
+docker-compose run --rm import-osmborder
+docker-compose run --rm import-wikidata
 ```
 
 [Download OpenStreetMap data extracts](http://download.geofabrik.de/) and store the PBF file in the `./data` directory.
