@@ -9,6 +9,7 @@ DROP TRIGGER IF EXISTS trigger_refresh ON transportation_name.updates;
 
 -- etldoc: osm_highway_linestring ->  osm_transportation_name_network
 -- etldoc: osm_route_member ->  osm_transportation_name_network
+DROP MATERIALIZED VIEW IF EXISTS osm_transportation_name_network CASCADE;
 CREATE MATERIALIZED VIEW osm_transportation_name_network AS (
   SELECT
       hl.geometry,
@@ -32,8 +33,8 @@ CREATE MATERIALIZED VIEW osm_transportation_name_network AS (
       CASE WHEN highway IN ('footway', 'steps') THEN indoor
           ELSE NULL::boolean
       END AS indoor,
-      ROW_NUMBER() OVER(PARTITION BY hl.osm_id
-                                   ORDER BY rm.network_type) AS "rank",
+      ROW_NUMBER() OVER(PARTITION BY hl.osm_id ORDER BY rm.network_type) AS "rank",
+      hl.start_date, hl.end_date,
       hl.z_order
   FROM osm_highway_linestring hl
   left join osm_route_member rm on (rm.member = hl.osm_id)
@@ -42,6 +43,7 @@ CREATE INDEX IF NOT EXISTS osm_transportation_name_network_geometry_idx ON osm_t
 
 
 -- etldoc: osm_transportation_name_network ->  osm_transportation_name_linestring
+DROP MATERIALIZED VIEW IF EXISTS osm_transportation_name_linestring CASCADE;
 CREATE MATERIALIZED VIEW osm_transportation_name_linestring AS (
     SELECT
         (ST_Dump(geometry)).geom AS geometry,
@@ -58,6 +60,7 @@ CREATE MATERIALIZED VIEW osm_transportation_name_linestring AS (
         layer,
         indoor,
         network_type AS network,
+        start_date, end_date,
         z_order
     FROM (
       SELECT
@@ -71,12 +74,13 @@ CREATE MATERIALIZED VIEW osm_transportation_name_linestring AS (
           layer,
           indoor,
           network_type,
+          start_date, end_date,
           min(z_order) AS z_order
       FROM osm_transportation_name_network
       WHERE ("rank"=1 OR "rank" is null)
         AND (name <> '' OR ref <> '')
         AND NULLIF(highway, '') IS NOT NULL
-      group by name, name_en, name_de, ref, highway, "level", layer, indoor, network_type
+      group by name, name_en, name_de, ref, highway, "level", layer, indoor, network_type, start_date, end_date
     ) AS highway_union
 );
 CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_geometry_idx ON osm_transportation_name_linestring USING gist(geometry);
@@ -87,7 +91,7 @@ CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_highway_partial_id
 
 -- etldoc: osm_transportation_name_linestring -> osm_transportation_name_linestring_gen1
 CREATE MATERIALIZED VIEW osm_transportation_name_linestring_gen1 AS (
-    SELECT ST_Simplify(geometry, 50) AS geometry, osm_id, name, name_en, name_de, tags, ref, highway, network, z_order
+    SELECT ST_Simplify(geometry, 50) AS geometry, osm_id, name, name_en, name_de, tags, ref, highway, network, start_date, end_date, z_order
     FROM osm_transportation_name_linestring
     WHERE highway IN ('motorway','trunk')  AND ST_Length(geometry) > 8000
 );
@@ -99,7 +103,7 @@ CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_gen1_highway_parti
 
 -- etldoc: osm_transportation_name_linestring_gen1 -> osm_transportation_name_linestring_gen2
 CREATE MATERIALIZED VIEW osm_transportation_name_linestring_gen2 AS (
-    SELECT ST_Simplify(geometry, 120) AS geometry, osm_id, name, name_en, name_de, tags, ref, highway, network, z_order
+    SELECT ST_Simplify(geometry, 120) AS geometry, osm_id, name, name_en, name_de, tags, ref, highway, network, start_date, end_date, z_order
     FROM osm_transportation_name_linestring_gen1
     WHERE highway IN ('motorway','trunk')  AND ST_Length(geometry) > 14000
 );
@@ -111,7 +115,7 @@ CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_gen2_highway_parti
 
 -- etldoc: osm_transportation_name_linestring_gen2 -> osm_transportation_name_linestring_gen3
 CREATE MATERIALIZED VIEW osm_transportation_name_linestring_gen3 AS (
-    SELECT ST_Simplify(geometry, 200) AS geometry, osm_id, name, name_en, name_de, tags, ref, highway, network, z_order
+    SELECT ST_Simplify(geometry, 200) AS geometry, osm_id, name, name_en, name_de, tags, ref, highway, network, start_date, end_date, z_order
     FROM osm_transportation_name_linestring_gen2
     WHERE highway = 'motorway' AND ST_Length(geometry) > 20000
 );
@@ -123,7 +127,7 @@ CREATE INDEX IF NOT EXISTS osm_transportation_name_linestring_gen3_highway_parti
 
 -- etldoc: osm_transportation_name_linestring_gen3 -> osm_transportation_name_linestring_gen4
 CREATE MATERIALIZED VIEW osm_transportation_name_linestring_gen4 AS (
-    SELECT ST_Simplify(geometry, 500) AS geometry, osm_id, name, name_en, name_de, tags, ref, highway, network, z_order
+    SELECT ST_Simplify(geometry, 500) AS geometry, osm_id, name, name_en, name_de, tags, ref, highway, network, start_date, end_date, z_order
     FROM osm_transportation_name_linestring_gen3
     WHERE highway = 'motorway' AND ST_Length(geometry) > 20000
 );

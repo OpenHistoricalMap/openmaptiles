@@ -9,6 +9,7 @@ CREATE MATERIALIZED VIEW osm_water_point AS (
     SELECT
         wp.osm_id, ST_PointOnSurface(wp.geometry) AS geometry,
         wp.name, wp.name_en, wp.name_de,
+        wp.start_date, wp.end_date,
         update_tags(wp.tags, ST_PointOnSurface(wp.geometry)) AS tags,
         ST_Area(wp.geometry) AS area
     FROM osm_water_polygon AS wp

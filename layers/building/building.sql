@@ -1,3 +1,9 @@
+-- OHM note: the OSM tables osm_building_relation osm_building_associatedstreet osm_building_street osm_building_polygon
+-- do not contain any name field, so don't bother
+-- but it does have a "building" field, so we can sometimes describe what the building is used for - GDA 2018 July
+
+
+
 -- etldoc: layer_building[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="layer_building | <z13> z13 | <z14_> z14+ " ] ;
 
@@ -72,13 +78,20 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
 );
 
 CREATE OR REPLACE FUNCTION layer_building(bbox geometry, zoom_level int)
-RETURNS TABLE(geometry geometry, osm_id bigint, render_height int, render_min_height int) AS $$
-    SELECT geometry, osm_id, render_height, render_min_height
+RETURNS TABLE(geometry geometry, osm_id bigint, render_height int, render_min_height int, building text, start_date text, end_date text) AS $$
+    SELECT geometry,
+        osm_id,
+        render_height,
+        render_min_height,
+        CASE WHEN building = 'yes' THEN '' ELSE building END,
+        start_date,
+        end_date
     FROM (
         -- etldoc: osm_building_polygon_gen1 -> layer_building:z13
         SELECT
             osm_id, geometry,
-            NULL::int AS render_height, NULL::int AS render_min_height
+            NULL::int AS render_height, NULL::int AS render_min_height,
+            building, start_date, end_date
         FROM osm_building_polygon_gen1
         WHERE zoom_level = 13 AND geometry && bbox
         UNION ALL
@@ -86,8 +99,9 @@ RETURNS TABLE(geometry geometry, osm_id bigint, render_height int, render_min_he
         SELECT DISTINCT ON (osm_id)
            osm_id, geometry,
            ceil( COALESCE(height, levels*3.66,5))::int AS render_height,
-           floor(COALESCE(min_height, min_level*3.66,0))::int AS render_min_height FROM
-        osm_all_buildings
+           floor(COALESCE(min_height, min_level*3.66,0))::int AS render_min_height,
+           ''::text AS building, ''::text AS start_date, ''::text AS end_date
+        FROM osm_all_buildings
         WHERE
             (levels IS NULL OR levels < 1000) AND
             (min_level IS NULL OR min_level < 1000) AND

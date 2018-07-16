@@ -8,7 +8,8 @@ DROP MATERIALIZED VIEW IF EXISTS osm_water_lakeline CASCADE;
 CREATE MATERIALIZED VIEW osm_water_lakeline AS (
 	SELECT wp.osm_id,
 		ll.wkb_geometry AS geometry,
-		name, name_en, name_de,
+		wp.name, wp.name_en, wp.name_de,
+		wp.start_date, wp.end_date,
 		update_tags(tags, ll.wkb_geometry) AS tags,
 		ST_Area(wp.geometry) AS area
     FROM osm_water_polygon AS wp

@@ -4,8 +4,8 @@
 
 CREATE OR REPLACE FUNCTION layer_place(bbox geometry, zoom_level int, pixel_width numeric)
 RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
-    name_de text, tags hstore, class text, "rank" int, capital INT, iso_a2
-        TEXT) AS $$
+    name_de text, tags hstore, class text, "rank" int, capital INT, iso_a2 TEXT,
+    start_date text, end_date text) AS $$
 
     -- etldoc: osm_continent_point -> layer_place:z0_3
     SELECT
@@ -14,7 +14,8 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
         'continent' AS class, 1 AS "rank", NULL::int AS capital,
-        NULL::text AS iso_a2
+        NULL::text AS iso_a2,
+        start_date, end_date
     FROM osm_continent_point
     WHERE geometry && bbox AND zoom_level < 4
     UNION ALL
@@ -29,7 +30,8 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
         'country' AS class, "rank", NULL::int AS capital,
-        iso3166_1_alpha_2 AS iso_a2
+        iso3166_1_alpha_2 AS iso_a2,
+        start_date, end_date
     FROM osm_country_point
     WHERE geometry && bbox AND "rank" <= zoom_level + 1 AND name <> ''
     UNION ALL
@@ -44,7 +46,8 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
         'state' AS class, "rank", NULL::int AS capital,
-        NULL::text AS iso_a2
+        NULL::text AS iso_a2,
+        start_date, end_date
     FROM osm_state_point
     WHERE geometry && bbox AND
           name <> '' AND
@@ -61,7 +64,8 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
         'island' AS class, 7 AS "rank", NULL::int AS capital,
-        NULL::text AS iso_a2
+        NULL::text AS iso_a2,
+        start_date, end_date
     FROM osm_island_point
     WHERE zoom_level >= 12
         AND geometry && bbox
@@ -75,7 +79,8 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
         'island' AS class, island_rank(area) AS "rank", NULL::int AS capital,
-        NULL::text AS iso_a2
+        NULL::text AS iso_a2,
+        start_date, end_date
     FROM osm_island_polygon
     WHERE geometry && bbox AND
         ((zoom_level = 8 AND island_rank(area) <= 3)
@@ -91,7 +96,8 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
         osm_id*10, geometry, name, name_en, name_de,
         tags,
         place::text AS class, "rank", capital,
-        NULL::text AS iso_a2
+        NULL::text AS iso_a2,
+        start_date, end_date
     FROM layer_city(bbox, zoom_level, pixel_width)
     ORDER BY "rank" ASC
 $$ LANGUAGE SQL IMMUTABLE;

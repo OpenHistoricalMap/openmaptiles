@@ -1,3 +1,8 @@
+-- OHM note: these include NaturalEarth content which is not Historical
+-- the question is pending, whether incluing non-OHM data is appropriate - GDA 2018-July
+
+
+
 DROP TRIGGER IF EXISTS trigger_flag ON osm_marine_point;
 DROP TRIGGER IF EXISTS trigger_refresh ON water_name_marine.updates;
 
@@ -12,7 +17,7 @@ BEGIN
   -- etldoc: osm_marine_point              -> osm_marine_point
 
   WITH important_marine_point AS (
-      SELECT osm.geometry, osm.osm_id, osm.name, osm.name_en, ne.scalerank
+      SELECT osm.geometry, osm.osm_id, osm.name, osm.name_en, ne.scalerank, osm.start_date, osm.end_date
       FROM ne_10m_geography_marine_polys AS ne, osm_marine_point AS osm
       WHERE trim(regexp_replace(ne.name, '\\s+', ' ', 'g')) ILIKE osm.name
         OR trim(regexp_replace(ne.name, '\\s+', ' ', 'g')) ILIKE osm.tags->'name:en'

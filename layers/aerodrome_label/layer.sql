@@ -16,8 +16,10 @@ CREATE OR REPLACE FUNCTION layer_aerodrome_label(
     iata text,
     icao text,
     ele int,
-    ele_ft int) AS
-$$
+    ele_ft int,
+    start_date text,
+    end_date text
+  ) AS $$
   -- etldoc: osm_aerodrome_label_point -> layer_aerodrome_label:z10_
   SELECT
     osm_id,
@@ -53,7 +55,8 @@ $$
     NULLIF(iata, '') AS iata,
     NULLIF(icao, '') AS icao,
     substring(ele from E'^(-?\\d+)(\\D|$)')::int AS ele,
-    round(substring(ele from E'^(-?\\d+)(\\D|$)')::int*3.2808399)::int AS ele_ft
+    round(substring(ele from E'^(-?\\d+)(\\D|$)')::int*3.2808399)::int AS ele_ft,
+    start_date, end_date
   FROM osm_aerodrome_label_point
   WHERE geometry && bbox AND zoom_level >= 10;
 

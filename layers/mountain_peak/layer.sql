@@ -3,9 +3,9 @@
 -- etldoc:     style="rounded,filled", label="layer_mountain_peak | <z7_> z7+" ] ;
 
 CREATE OR REPLACE FUNCTION layer_mountain_peak(bbox geometry, zoom_level integer, pixel_width numeric)
-RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de text, tags hstore, ele int, ele_ft int, "rank" int) AS $$
+RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de text, tags hstore, ele int, ele_ft int, "rank" int, start_date text, end_date text) AS $$
    -- etldoc: osm_peak_point -> layer_mountain_peak:z7_
-   SELECT osm_id, geometry, name, name_en, name_de, tags, ele::int, ele_ft::int, rank::int
+   SELECT osm_id, geometry, name, name_en, name_de, tags, ele::int, ele_ft::int, rank::int, start_date, end_date
    FROM (
      SELECT osm_id, geometry, name,
      COALESCE(NULLIF(name_en, ''), name) AS name_en,
@@ -20,7 +20,8 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
              (CASE WHEN NULLIF(wikipedia, '') is not null THEN 10000 ELSE 0 END) +
              (CASE WHEN NULLIF(name, '') is not null THEN 10000 ELSE 0 END)
            ) DESC
-       )::int AS "rank"
+       )::int AS "rank",
+       start_date, end_date
      FROM osm_peak_point
      WHERE geometry && bbox AND ele is not null AND ele ~ E'^-?\\d+'
    ) AS ranked_peaks

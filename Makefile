@@ -39,8 +39,8 @@ help:
 .PHONY: build/openmaptiles.tm2source/data.yml
 
 build/openmaptiles.tm2source/data.yml:
-	mkdir -p build/openmaptiles.tm2source && generate-tm2source openmaptiles.yaml --host="postgres" --port=5432 --database="openmaptiles" --user="openmaptiles" --password="openmaptiles" > build/openmaptiles.tm2source/data.yml
-
+	mkdir -p build/openmaptiles.tm2source && generate-tm2source openmaptiles.yaml --host="localhost" --port=5432 --database="openmaptiles" --user="openmaptiles" --password="openmaptiles" > build/openmaptiles.tm2source/data.yml
+ 
 build/mapping.yaml: openmaptiles.yaml
 	mkdir -p build && generate-imposm3 $< > $@
 

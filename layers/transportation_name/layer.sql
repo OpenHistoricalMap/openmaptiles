@@ -4,8 +4,8 @@
 
 CREATE OR REPLACE FUNCTION layer_transportation_name(bbox geometry, zoom_level integer)
 RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
-  name_de text, tags hstore, ref text, ref_length int, network text, class
-  text, subclass text, layer INT, level INT, indoor INT) AS $$
+  name_de text, tags hstore, ref text, ref_length int, network text,
+  class text, subclass text, layer INT, level INT, indoor INT, start_date text, end_date text) AS $$
     SELECT osm_id, geometry,
       NULLIF(name, '') AS name,
       COALESCE(NULLIF(name_en, ''), name) AS name_en,
@@ -27,26 +27,27 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
       END AS subclass,
       NULLIF(layer, 0) AS layer,
       "level",
-      CASE WHEN indoor=TRUE THEN 1 ELSE NULL END as indoor
+      CASE WHEN indoor=TRUE THEN 1 ELSE NULL END as indoor,
+      start_date, end_date
     FROM (
 
         -- etldoc: osm_transportation_name_linestring_gen4 ->  layer_transportation_name:z6
-        SELECT *,
-            NULL::int AS layer, NULL::int AS level, NULL::boolean AS indoor
+        SELECT osm_id, geometry, name, name_en, name_de, tags, ref, network, highway, z_order,
+            NULL::int AS layer, NULL::int AS level, NULL::boolean AS indoor, start_date, end_date
         FROM osm_transportation_name_linestring_gen4
         WHERE zoom_level = 6
         UNION ALL
 
         -- etldoc: osm_transportation_name_linestring_gen3 ->  layer_transportation_name:z7
-        SELECT *,
-            NULL::int AS layer, NULL::int AS level, NULL::boolean AS indoor
+        SELECT osm_id, geometry, name, name_en, name_de, tags, ref, network, highway, z_order,
+            NULL::int AS layer, NULL::int AS level, NULL::boolean AS indoor, start_date, end_date
         FROM osm_transportation_name_linestring_gen3
         WHERE zoom_level = 7
         UNION ALL
 
         -- etldoc: osm_transportation_name_linestring_gen2 ->  layer_transportation_name:z8
-        SELECT *,
-            NULL::int AS layer, NULL::int AS level, NULL::boolean AS indoor
+        SELECT osm_id, geometry, name, name_en, name_de, tags, ref, network, highway, z_order,
+            NULL::int AS layer, NULL::int AS level, NULL::boolean AS indoor, start_date, end_date
         FROM osm_transportation_name_linestring_gen2
         WHERE zoom_level = 8
         UNION ALL
@@ -54,27 +55,28 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
         -- etldoc: osm_transportation_name_linestring_gen1 ->  layer_transportation_name:z9
         -- etldoc: osm_transportation_name_linestring_gen1 ->  layer_transportation_name:z10
         -- etldoc: osm_transportation_name_linestring_gen1 ->  layer_transportation_name:z11
-        SELECT *,
-            NULL::int AS layer, NULL::int AS level, NULL::boolean AS indoor
+        SELECT osm_id, geometry, name, name_en, name_de, tags, ref, network, highway, z_order,
+            NULL::int AS layer, NULL::int AS level, NULL::boolean AS indoor, start_date, end_date
         FROM osm_transportation_name_linestring_gen1
         WHERE zoom_level BETWEEN 9 AND 11
         UNION ALL
 
         -- etldoc: osm_transportation_name_linestring ->  layer_transportation_name:z12
         SELECT
-          geometry,
           osm_id,
+          geometry,
           name,
           name_en,
           name_de,
           "tags",
           ref,
-          highway,
           network,
+          highway,
           z_order,
           layer,
           "level",
-          indoor
+          indoor,
+          start_date, end_date
         FROM osm_transportation_name_linestring
         WHERE zoom_level = 12
             AND LineLabel(zoom_level, COALESCE(NULLIF(name, ''), ref), geometry)
@@ -84,19 +86,20 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
 
         -- etldoc: osm_transportation_name_linestring ->  layer_transportation_name:z13
         SELECT
-          geometry,
           osm_id,
+          geometry,
           name,
           name_en,
           name_de,
           "tags",
           ref,
-          highway,
           network,
+          highway,
           z_order,
           layer,
           "level",
-          indoor
+          indoor,
+          start_date, end_date
         FROM osm_transportation_name_linestring
         WHERE zoom_level = 13
             AND LineLabel(zoom_level, COALESCE(NULLIF(name, ''), ref), geometry)
@@ -105,19 +108,20 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text,
 
         -- etldoc: osm_transportation_name_linestring ->  layer_transportation_name:z14_
         SELECT
-          geometry,
           osm_id,
+          geometry,
           name,
           name_en,
           name_de,
           "tags",
           ref,
-          highway,
           network,
+          highway,
           z_order,
           layer,
           "level",
-          indoor
+          indoor,
+          start_date, end_date
         FROM osm_transportation_name_linestring
         WHERE zoom_level >= 14
 
