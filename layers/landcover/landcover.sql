@@ -35,13 +35,9 @@ CREATE OR REPLACE VIEW landcover_z2 AS (
 );
 
 CREATE OR REPLACE VIEW landcover_z5 AS (
-    -- etldoc: ne_10m_glaciated_areas ->  landcover_z5
-    SELECT NULL::bigint AS osm_id, geometry, NULL::text AS landuse, 'glacier'::text AS "natural", NULL::text AS leisure, NULL::text AS wetland, ''::text AS start_date, ''::text AS end_date
-    FROM ne_10m_glaciated_areas
-    UNION ALL
-    -- etldoc: ne_10m_antarctic_ice_shelves_polys ->  landcover_z5
-    SELECT NULL::bigint AS osm_id, geometry, NULL::text AS landuse, 'ice_shelf'::text AS "natural", NULL::text AS leisure, NULL::text AS wetland, ''::text AS start_date, ''::text AS end_date
-    FROM ne_10m_antarctic_ice_shelves_polys
+    -- etldoc: osm_landcover_polygon_gen7 ->  landcover_z7
+    SELECT osm_id, geometry, landuse, "natural", leisure, wetland, start_date, end_date
+    FROM osm_landcover_polygon_gen7
 );
 
 CREATE OR REPLACE VIEW landcover_z7 AS (

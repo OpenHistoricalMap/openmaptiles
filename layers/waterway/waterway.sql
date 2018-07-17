@@ -27,9 +27,8 @@ CREATE OR REPLACE VIEW waterway_z4 AS (
 
 -- etldoc: ne_10m_rivers_lake_centerlines ->  waterway_z6
 CREATE OR REPLACE VIEW waterway_z6 AS (
-    SELECT NULL::bigint AS osm_id, geometry, 'river'::text AS class, NULL::text AS name, NULL::text AS name_en, NULL::text AS name_de, NULL::hstore AS tags, NULL::boolean AS is_bridge, NULL::boolean AS is_tunnel, ''::text AS start_date, ''::text AS end_date
-    FROM ne_10m_rivers_lake_centerlines
-    WHERE featurecla = 'River'
+    SELECT osm_id, geometry, 'river'::text AS class, name, name_en, name_de, tags, NULL::boolean AS is_bridge, NULL::boolean AS is_tunnel, start_date, end_date
+    FROM osm_important_waterway_linestring_gen3
 );
 
 -- etldoc: osm_important_waterway_linestring_gen3 ->  waterway_z9
@@ -87,7 +86,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, class text, name text, name_en t
         SELECT * FROM waterway_z3 WHERE zoom_level = 3
         UNION ALL
         -- etldoc: waterway_z4 ->  layer_waterway:z4_5
-        SELECT * FROM waterway_z4 WHERE zoom_level BETWEEN 4 AND 5
+        SELECT * FROM waterway_z4 WHERE zoom_level BETWEEN 4 AND 6
         UNION ALL
         -- etldoc: waterway_z6 ->  layer_waterway:z6_8
         SELECT * FROM waterway_z6 WHERE zoom_level BETWEEN 6 AND 8
