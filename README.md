@@ -104,40 +104,57 @@ docker-compose run --rm import-osmborder
 docker-compose run --rm import-wikidata
 ```
 
-[Download OpenStreetMap data extracts](http://download.geofabrik.de/) and store the PBF file in the `./data` directory.
+### Additional Preprocessing
+
+The SQL file `build/ohm_preprocessing.sql` has some additional preprocessing steps specific to OpenHistoricalMap, e.g. emptying some data, creating custom fields, ...
+
+```
+psql -U openmaptiles openmaptiles
+    \i build/ohm_preprocessing.sql
+    \q
+```
+
+### Import OHM PBF
+
+the Download OpenHistoricalMap planet file, and store the PBF file in the `./data` directory.
 
 ```bash
 cd data
 wget http://download.geofabrik.de/europe/albania-latest.osm.pbf
 ```
 
-[Import OpenStreetMap data](https://github.com/openmaptiles/import-osm) with the mapping rules from
-`build/mapping.yaml` (which has been created by `make`).
+[Import OpenStreetMap data](https://github.com/openmaptiles/import-osm) with the mapping rules from `build/mapping.yaml` (which has been created by `make`).
 
 ```bash
 docker-compose run import-osm
-```
 
-### Work on Layers
-
-Each time you modify layer SQL code run `make` and `docker-compose run import-sql`.
-
-```
 make clean && make && docker-compose run import-sql
 ```
 
-Now you are ready to **generate the vector tiles**. Using environment variables
-you can limit the bounding box and zoom levels of what you want to generate (`docker-compose.yml`).
+
+### Additional Postprocessing
+
+The SQL file `build/ohm_postprocessing.sql` has some additional postprocessing steps specific to OpenHistoricalMap, e.g. emptying some data, creating custom fields, ...
+
+```
+psql -U openmaptiles openmaptiles
+    \i build/ohm_postprocessing.sql
+    \q
+```
+
+
+### Generating Static Vector Tiles
+
+Now you are ready to **generate the vector tiles**. Using environment variables you can limit the bounding box and zoom levels of what you want to generate (`docker-compose.yml`).
 
 ```
 docker-compose run generate-vectortiles
 ```
 
-### Vector Tile Rendering
+For OpenHistoricalMap, we prefer t erve the tiles live; see below.
 
-Vector tiles can be rendered live using
-[`postserve`](https://github.com/openmaptiles/postserve) (which uses `ST_AsMVT`
-directly in PostGIS) or by using Mapnik:
+
+### Vector Tile Rendering with Tessera
 
 ```bash
 npm install tessera @mapbox/tilelive-vector tilelive-tmsource tilelive-xray
