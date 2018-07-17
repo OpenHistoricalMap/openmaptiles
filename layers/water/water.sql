@@ -55,9 +55,6 @@ CREATE OR REPLACE VIEW water_z6 AS (
     UNION ALL
    -- etldoc:  osm_water_polygon_gen6 ->  water_z6
     SELECT osm_id, geometry, water_class(waterway) AS class, name_en AS name, start_date, end_date FROM osm_water_polygon_gen6
-    -- OHM patch, so Great Lakes etc. continue at z6+
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 'lake'::text AS class, name, ''::text AS start_date, ''::text AS end_date FROM ne_10m_lakes
 );
 
 CREATE OR REPLACE VIEW water_z7 AS (
@@ -66,9 +63,6 @@ CREATE OR REPLACE VIEW water_z7 AS (
     UNION ALL
     -- etldoc:  osm_water_polygon_gen5 ->  water_z7
     SELECT osm_id, geometry, water_class(waterway) AS class, name_en AS name, start_date, end_date FROM osm_water_polygon_gen5
-    -- OHM patch, so Great Lakes etc. continue at z6+
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 'lake'::text AS class, name, ''::text AS start_date, ''::text AS end_date FROM ne_10m_lakes
 );
 
 CREATE OR REPLACE VIEW water_z8 AS (
@@ -77,9 +71,6 @@ CREATE OR REPLACE VIEW water_z8 AS (
     UNION ALL
     -- etldoc:  osm_water_polygon_gen4 ->  water_z8
     SELECT osm_id, geometry, water_class(waterway) AS class, name_en AS name, start_date, end_date FROM osm_water_polygon_gen4
-    -- OHM patch, so Great Lakes etc. continue at z6+
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 'lake'::text AS class, name, ''::text AS start_date, ''::text AS end_date FROM ne_10m_lakes
 );
 
 CREATE OR REPLACE VIEW water_z9 AS (
@@ -88,9 +79,6 @@ CREATE OR REPLACE VIEW water_z9 AS (
     UNION ALL
     -- etldoc:  osm_water_polygon_gen3 ->  water_z9
     SELECT osm_id, geometry, water_class(waterway) AS class, name_en AS name, start_date, end_date FROM osm_water_polygon_gen3
-    -- OHM patch, so Great Lakes etc. continue at z6+
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 'lake'::text AS class, name, ''::text AS start_date, ''::text AS end_date FROM ne_10m_lakes
 );
 
 CREATE OR REPLACE VIEW water_z10 AS (
@@ -99,9 +87,6 @@ CREATE OR REPLACE VIEW water_z10 AS (
     UNION ALL
     -- etldoc:  osm_water_polygon_gen2 ->  water_z10
     SELECT osm_id, geometry, water_class(waterway) AS class, name_en AS name, start_date, end_date FROM osm_water_polygon_gen2
-    -- OHM patch, so Great Lakes etc. continue at z6+
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 'lake'::text AS class, name, ''::text AS start_date, ''::text AS end_date FROM ne_10m_lakes
 );
 
 CREATE OR REPLACE VIEW water_z11 AS (
@@ -110,9 +95,6 @@ CREATE OR REPLACE VIEW water_z11 AS (
     UNION ALL
     -- etldoc:  osm_water_polygon_gen1 ->  water_z11
     SELECT osm_id, geometry, water_class(waterway) AS class, name_en AS name, start_date, end_date FROM osm_water_polygon_gen1
-    -- OHM patch, so Great Lakes etc. continue at z6+
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 'lake'::text AS class, name, ''::text AS start_date, ''::text AS end_date FROM ne_10m_lakes
 );
 
 CREATE OR REPLACE VIEW water_z12 AS (
@@ -121,9 +103,6 @@ CREATE OR REPLACE VIEW water_z12 AS (
     UNION ALL
     -- etldoc:  osm_water_polygon ->  water_z12
     SELECT osm_id, geometry, water_class(waterway) AS class, name_en AS name, start_date, end_date FROM osm_water_polygon
-    -- OHM patch, so Great Lakes etc. continue at z6+
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 'lake'::text AS class, name, ''::text AS start_date, ''::text AS end_date FROM ne_10m_lakes
 );
 
 CREATE OR REPLACE VIEW water_z13 AS (
@@ -132,9 +111,6 @@ CREATE OR REPLACE VIEW water_z13 AS (
     UNION ALL
     -- etldoc:  osm_water_polygon ->  water_z13
     SELECT osm_id, geometry, water_class(waterway) AS class, name_en AS name, start_date, end_date FROM osm_water_polygon
-    -- OHM patch, so Great Lakes etc. continue at z6+
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 'lake'::text AS class, name, ''::text AS start_date, ''::text AS end_date FROM ne_10m_lakes
 );
 
 CREATE OR REPLACE VIEW water_z14 AS (
@@ -143,9 +119,6 @@ CREATE OR REPLACE VIEW water_z14 AS (
     UNION ALL
     -- etldoc:  osm_water_polygon ->  water_z14
     SELECT osm_id, geometry, water_class(waterway) AS class, name_en AS name, start_date, end_date FROM osm_water_polygon
-    -- OHM patch, so Great Lakes etc. continue at z6+
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 'lake'::text AS class, name, ''::text AS start_date, ''::text AS end_date FROM ne_10m_lakes
 );
 
 -- etldoc: layer_water [shape=record fillcolor=lightpink, style="rounded,filled",
