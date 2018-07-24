@@ -137,7 +137,7 @@ make clean && make && docker-compose run import-sql
 The SQL file `build/ohm_postprocessing.sql` has some additional postprocessing steps specific to OpenHistoricalMap, e.g. emptying some data, creating custom fields, ...
 
 ```
-psql -U openmaptiles openmaptiles
+psql -h 127.0.0.1 -U openmaptiles openmaptiles
     \i build/ohm_postprocessing.sql
     \q
 ```

@@ -10,7 +10,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         COALESCE(NULLIF(name_en, ''), name) AS name_en,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
-        place, "rank", normalize_capital_level(capital) AS capital,
+        place::city_place, "rank", normalize_capital_level(capital) AS capital,
         start_date, end_date
     FROM osm_city_point
     WHERE geometry && bbox
@@ -22,7 +22,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         COALESCE(NULLIF(name_en, ''), name) AS name_en,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
-        place,
+        place::city_place,
         COALESCE("rank", gridrank + 10),
         normalize_capital_level(capital) AS capital,
         start_date, end_date
@@ -31,21 +31,21 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
       COALESCE(NULLIF(name_en, ''), name) AS name_en,
       COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
       tags,
-      place, "rank", capital,
+      place::city_place, "rank", capital,
       start_date, end_date,
       row_number() OVER (
         PARTITION BY LabelGrid(geometry, 128 * pixel_width)
         ORDER BY "rank" ASC NULLS LAST,
-        place ASC NULLS LAST,
+        place::city_place ASC NULLS LAST,
         population DESC NULLS LAST,
         length(name) ASC
       )::int AS gridrank
         FROM osm_city_point
         WHERE geometry && bbox
-          AND ((zoom_level = 7 AND place <= 'town'::city_place
-            OR (zoom_level BETWEEN 8 AND 10 AND place <= 'village'::city_place)
+          AND ((zoom_level = 7 AND place::city_place <= 'town'::city_place
+            OR (zoom_level BETWEEN 8 AND 10 AND place::city_place <= 'village'::city_place)
 
-            OR (zoom_level BETWEEN 11 AND 13 AND place <= 'suburb'::city_place)
+            OR (zoom_level BETWEEN 11 AND 13 AND place::city_place <= 'suburb'::city_place)
             OR (zoom_level >= 14)
           ))
     ) AS ranked_places
