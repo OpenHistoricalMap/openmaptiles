@@ -38,13 +38,22 @@ services:
      - ./data:/import
      - ./build:/mapping
      - cache:/cache
-  import-osmborder:
-    image: "openmaptiles/import-osmborder:0.4"
+  makecsv-osmborder:
+    build: https://github.com/OpenHistoricalMap/osmborder-docker.git
     env_file: .env
     networks:
     - postgres_conn
+    volumes:
+     - ./data:/import
+  import-osmborder:
+    build: https://github.com/OpenHistoricalMap/import-osmborder.git
+    env_file: .env
+    networks:
+    - postgres_conn
+    volumes:
+     - ./data:/import
   import-osm-diff:
-    image: "openmaptiles/import-osm:0.4"
+    build: https://github.com/OpenHistoricalMap/import-osm.git
     env_file: .env
     command: ./import_diff.sh
     environment:
@@ -56,7 +65,7 @@ services:
      - ./build:/mapping
      - cache:/cache
   update-osm:
-    image: "openmaptiles/import-osm:0.4"
+    build: https://github.com/OpenHistoricalMap/import-osm.git
     env_file: .env
     environment:
       DIFF_MODE: ${DIFF_MODE}

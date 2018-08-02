@@ -73,17 +73,9 @@ Build the tileset.
 ```bash
 git clone git@github.com:openmaptiles/openmaptiles.git
 cd openmaptiles
+
 # Build the imposm mapping, the tm2source project and collect all SQL scripts
 make
-# You can also run the build process inside a Docker container
-docker run -v $(pwd):/tileset openmaptiles/openmaptiles-tools make
-```
-
-You can execute the following manual steps (for better understanding)
-or use the provided `quickstart.sh` script.
-
-```
-./quickstart.sh
 ```
 
 ### Prepare the Database
@@ -100,8 +92,14 @@ Import external data from [OpenStreetMapData](http://openstreetmapdata.com/), [N
 docker-compose run --rm import-water
 docker-compose run --rm import-natural-earth
 docker-compose run --rm import-lakelines
-docker-compose run --rm import-osmborder
 docker-compose run --rm import-wikidata
+```
+
+Run our customized OHM border system, extracting OHM borders to CSV then importing that CSV.
+
+```bash
+docker-compose run --rm makecsv-osmborder
+docker-compose run --rm import-osmborder
 ```
 
 ### Additional Preprocessing
@@ -137,7 +135,7 @@ make clean && make && docker-compose run import-sql
 The SQL file `build/ohm_postprocessing.sql` has some additional postprocessing steps specific to OpenHistoricalMap, e.g. emptying some data, creating custom fields, ...
 
 ```
-psql -h 127.0.0.1 -U openmaptiles openmaptiles
+psql -U openmaptiles openmaptiles
     \i build/ohm_postprocessing.sql
     \q
 ```
@@ -160,6 +158,18 @@ For OpenHistoricalMap, we prefer t erve the tiles live; see below.
 npm install tessera @mapbox/tilelive-vector tilelive-tmsource tilelive-xray
 node_modules/.bin/tessera tmsource://./build/openmaptiles.tm2source
 ```
+
+## Updating OHM
+
+```
+cd /home/ubuntu/OPENMAPTILES/openmaptiles
+
+docker-compose run update-osm
+
+docker-compose run --rm makecsv-osmborder
+docker-compose run --rm import-osmborder
+```
+
 
 ## License
 
