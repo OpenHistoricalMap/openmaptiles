@@ -170,6 +170,10 @@ docker-compose run --rm makecsv-osmborder
 docker-compose run --rm import-osmborder
 ```
 
+The *makecsv-osmborder* step takes 15-30 minutes, as it must fetch the entire OHM planet file and extract the borders from it. Since planet files are often not done until fairly late in the day, they are also fetched from the previous day.
+
+The runtime of *makecsv-osmborder* is about 25 minutes at this tim, and likely to increase as OGM grows.
+
 
 ## License
 
