@@ -821,20 +821,16 @@ DO $$ BEGIN RAISE NOTICE 'Layer boundary'; END$$;-- OHM note: I think that osm_b
 -- etldoc: ne_110m_admin_0_boundary_lines_land  -> boundary_z0
 
 CREATE OR REPLACE VIEW boundary_z0 AS (
-    SELECT NULL::bigint AS osm_id, geometry, 2 AS admin_level, false AS disputed, false AS maritime, ''::text AS start_date, ''::text AS end_date
-    FROM ne_110m_admin_0_boundary_lines_land
+    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    FROM osm_border_linestring_gen10
 );
 
 -- etldoc: ne_50m_admin_0_boundary_lines_land  -> boundary_z1
 -- etldoc: ne_50m_admin_1_states_provinces_lines -> boundary_z1
 
 CREATE OR REPLACE VIEW boundary_z1 AS (
-    SELECT NULL::bigint AS osm_id, geometry, 2 AS admin_level, false AS disputed, false AS maritime, ''::text AS start_date, ''::text AS end_date
-    FROM ne_50m_admin_0_boundary_lines_land
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 4 AS admin_level, false AS disputed, false AS maritime, ''::text AS start_date, ''::text AS end_date
-    FROM ne_50m_admin_1_states_provinces_lines
-    WHERE scalerank <= 2
+    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    FROM osm_border_linestring_gen10
 );
 
 
@@ -842,11 +838,8 @@ CREATE OR REPLACE VIEW boundary_z1 AS (
 -- etldoc: ne_50m_admin_1_states_provinces_lines -> boundary_z3
 
 CREATE OR REPLACE VIEW boundary_z3 AS (
-    SELECT NULL::bigint AS osm_id, geometry, 2 AS admin_level, false AS disputed, false AS maritime, ''::text AS start_date, ''::text AS end_date
-    FROM ne_50m_admin_0_boundary_lines_land
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 4 AS admin_level, false AS disputed, false AS maritime, ''::text AS start_date, ''::text AS end_date
-    FROM ne_50m_admin_1_states_provinces_lines
+    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    FROM osm_border_linestring_gen10
 );
 
 
@@ -855,17 +848,8 @@ CREATE OR REPLACE VIEW boundary_z3 AS (
 -- etldoc: osm_border_linestring_gen10 -> boundary_z4
 
 CREATE OR REPLACE VIEW boundary_z4 AS (
-    SELECT NULL::bigint AS osm_id, geometry, 2 AS admin_level, false AS disputed, false AS maritime, ''::text AS start_date, ''::text AS end_date
-    FROM ne_10m_admin_0_boundary_lines_land
-    WHERE featurecla <> 'Lease limit'
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 4 AS admin_level, false AS disputed, false AS maritime, ''::text AS start_date, ''::text AS end_date
-    FROM ne_10m_admin_1_states_provinces_lines
-    WHERE scalerank <= 3 AND min_zoom <= 7
-    UNION ALL
     SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
     FROM osm_border_linestring_gen10
-    WHERE maritime=true AND admin_level <= 2
 );
 
 -- etldoc: ne_10m_admin_0_boundary_lines_land -> boundary_z5
@@ -873,17 +857,8 @@ CREATE OR REPLACE VIEW boundary_z4 AS (
 -- etldoc: osm_border_linestring_gen9 -> boundary_z5
 
 CREATE OR REPLACE VIEW boundary_z5 AS (
-    SELECT NULL::bigint AS osm_id, geometry, 2 AS admin_level, false AS disputed, false AS maritime, ''::text AS start_date, ''::text AS end_date
-    FROM ne_10m_admin_0_boundary_lines_land
-    WHERE featurecla <> 'Lease limit'
-    UNION ALL
-    SELECT NULL::bigint AS osm_id, geometry, 4 AS admin_level, false AS disputed, false AS maritime, ''::text AS start_date, ''::text AS end_date
-    FROM ne_10m_admin_1_states_provinces_lines
-    WHERE scalerank <= 7 AND min_zoom <= 8
-    UNION ALL
     SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
     FROM osm_border_linestring_gen9
-    WHERE maritime=true AND admin_level <= 2
 );
 
 -- etldoc: osm_border_linestring_gen8 -> boundary_z6
