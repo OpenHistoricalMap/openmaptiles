@@ -5,7 +5,7 @@
 CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_width numeric)
 RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de text, tags hstore,
     class text, subclass text, start_date text, end_date text, agg_stop integer, "rank" int) AS $$
-    SELECT osm_id_hash AS osm_id, geometry, NULLIF(name, '') AS name,
+    SELECT osm_id, geometry, NULLIF(name, '') AS name,
         COALESCE(NULLIF(name_en, ''), name) AS name_en,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
@@ -29,8 +29,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         SELECT osm_id, geometry, name, name_en, name_de, tags, subclass, mapping_key,
             information, religion,
             start_date, end_date,
-            agg_stop,
-            osm_id*10 AS osm_id_hash
+            agg_stop
             FROM osm_poi_point
             WHERE geometry && bbox
                 AND zoom_level BETWEEN 12 AND 13
@@ -42,8 +41,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         SELECT osm_id, geometry, name, name_en, name_de, tags, subclass, mapping_key,
             information, religion,
             start_date, end_date,
-            agg_stop,
-            osm_id*10 AS osm_id_hash
+            agg_stop
             FROM osm_poi_point
             WHERE geometry && bbox
                 AND zoom_level >= 14
@@ -54,10 +52,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         SELECT osm_id, geometry, name, name_en, name_de, tags, subclass, mapping_key,
             information, religion,
             start_date, end_date,
-            NULL::INTEGER AS agg_stop,
-            CASE WHEN osm_id<0 THEN -osm_id*10+4
-                ELSE osm_id*10+1
-            END AS osm_id_hash
+            NULL::INTEGER AS agg_stop
         FROM osm_poi_polygon
             WHERE geometry && bbox
                 AND zoom_level BETWEEN 12 AND 13
@@ -69,10 +64,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         SELECT osm_id, geometry, name, name_en, name_de, tags, subclass, mapping_key,
             information, religion,
             start_date, end_date,
-            NULL::INTEGER AS agg_stop,
-            CASE WHEN osm_id<0 THEN -osm_id*10+4
-                ELSE osm_id*10+1
-            END AS osm_id_hash
+            NULL::INTEGER AS agg_stop
         FROM osm_poi_polygon
             WHERE geometry && bbox
                 AND zoom_level >= 14
