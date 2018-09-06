@@ -810,10 +810,11 @@ RETURNS TABLE(osm_id bigint, geometry geometry, class text, start_date text, end
     ) AS zoom_levels
     WHERE geometry && bbox;
 $$ LANGUAGE SQL IMMUTABLE;
-DO $$ BEGIN RAISE NOTICE 'Layer boundary'; END$$;-- etldoc: ne_110m_admin_0_boundary_lines_land  -> boundary_z0
+DO $$ BEGIN RAISE NOTICE 'Layer boundary'; END$$;
+-- etldoc: ne_110m_admin_0_boundary_lines_land  -> boundary_z0
 
 CREATE OR REPLACE VIEW boundary_z0 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen10
 );
 
@@ -821,7 +822,7 @@ CREATE OR REPLACE VIEW boundary_z0 AS (
 -- etldoc: ne_50m_admin_1_states_provinces_lines -> boundary_z1
 
 CREATE OR REPLACE VIEW boundary_z1 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen10
 );
 
@@ -830,7 +831,7 @@ CREATE OR REPLACE VIEW boundary_z1 AS (
 -- etldoc: ne_50m_admin_1_states_provinces_lines -> boundary_z3
 
 CREATE OR REPLACE VIEW boundary_z3 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen10
 );
 
@@ -840,7 +841,7 @@ CREATE OR REPLACE VIEW boundary_z3 AS (
 -- etldoc: osm_border_linestring_gen10 -> boundary_z4
 
 CREATE OR REPLACE VIEW boundary_z4 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen10
 );
 
@@ -849,70 +850,71 @@ CREATE OR REPLACE VIEW boundary_z4 AS (
 -- etldoc: osm_border_linestring_gen9 -> boundary_z5
 
 CREATE OR REPLACE VIEW boundary_z5 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen9
 );
 
 -- etldoc: osm_border_linestring_gen8 -> boundary_z6
 CREATE OR REPLACE VIEW boundary_z6 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen8
     WHERE admin_level <= 4
 );
 
 -- etldoc: osm_border_linestring_gen7 -> boundary_z7
 CREATE OR REPLACE VIEW boundary_z7 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen7
     WHERE admin_level <= 4
 );
 
 -- etldoc: osm_border_linestring_gen6 -> boundary_z8
 CREATE OR REPLACE VIEW boundary_z8 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen6
     WHERE admin_level <= 4
 );
 
 -- etldoc: osm_border_linestring_gen5 -> boundary_z9
 CREATE OR REPLACE VIEW boundary_z9 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen5
     WHERE admin_level <= 6
 );
 
 -- etldoc: osm_border_linestring_gen4 -> boundary_z10
 CREATE OR REPLACE VIEW boundary_z10 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen4
     WHERE admin_level <= 6
 );
 
 -- etldoc: osm_border_linestring_gen3 -> boundary_z11
 CREATE OR REPLACE VIEW boundary_z11 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen3
     WHERE admin_level <= 8
 );
 
 -- etldoc: osm_border_linestring_gen2 -> boundary_z12
 CREATE OR REPLACE VIEW boundary_z12 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen2
 );
 
 -- etldoc: osm_border_linestring_gen1 -> boundary_z12
 CREATE OR REPLACE VIEW boundary_z13 AS (
-    SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
+    SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen1
 );
+
 
 -- etldoc: layer_boundary[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="<sql> layer_boundary |<z0> z0 |<z1_2> z1_2 | <z3> z3 | <z4> z4 | <z5> z5 | <z6> z6 | <z7> z7 | <z8> z8 | <z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13+"]
 
 CREATE OR REPLACE FUNCTION layer_boundary (bbox geometry, zoom_level int)
-RETURNS TABLE(osm_id bigint, geometry geometry, admin_level int, disputed int, maritime int, start_date text, end_date text) AS $$
-    SELECT osm_id, geometry, admin_level, disputed::int, maritime::int, start_date::text, end_date::text FROM (
+RETURNS TABLE(osm_id bigint, geometry geometry, admin_level int, name varchar, disputed int, maritime int, start_date text, end_date text) AS $$
+    SELECT osm_id, geometry, admin_level, name, disputed::int, maritime::int, start_date::text, end_date::text FROM (
         -- etldoc: boundary_z0 ->  layer_boundary:z0
         SELECT * FROM boundary_z0 WHERE geometry && bbox AND zoom_level = 0
         UNION ALL

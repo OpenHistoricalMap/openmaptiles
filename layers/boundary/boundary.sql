@@ -99,8 +99,8 @@ CREATE OR REPLACE VIEW boundary_z13 AS (
 -- etldoc:     label="<sql> layer_boundary |<z0> z0 |<z1_2> z1_2 | <z3> z3 | <z4> z4 | <z5> z5 | <z6> z6 | <z7> z7 | <z8> z8 | <z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13+"]
 
 CREATE OR REPLACE FUNCTION layer_boundary (bbox geometry, zoom_level int)
-RETURNS TABLE(osm_id bigint, geometry geometry, admin_level int, disputed int, maritime int, start_date text, end_date text) AS $$
-    SELECT osm_id, geometry, admin_level, disputed::int, maritime::int, start_date::text, end_date::text FROM (
+RETURNS TABLE(osm_id bigint, geometry geometry, admin_level int, name varchar, disputed int, maritime int, start_date text, end_date text) AS $$
+    SELECT osm_id, geometry, admin_level, name, disputed::int, maritime::int, start_date::text, end_date::text FROM (
         -- etldoc: boundary_z0 ->  layer_boundary:z0
         SELECT * FROM boundary_z0 WHERE geometry && bbox AND zoom_level = 0
         UNION ALL
