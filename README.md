@@ -95,7 +95,7 @@ docker-compose run --rm import-lakelines
 docker-compose run --rm import-wikidata
 ```
 
-Run our customized OHM border system, extracting OHM borders to CSV then importing that CSV.
+Run our customized OHM border system, extracting OHM borders to CSV then importing that CSV. The "makecsv" step takes 25 minutes, but the "import" step takes a few seconds.
 
 ```bash
 docker-compose run --rm makecsv-osmborder

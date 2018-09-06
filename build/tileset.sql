@@ -810,15 +810,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, class text, start_date text, end
     ) AS zoom_levels
     WHERE geometry && bbox;
 $$ LANGUAGE SQL IMMUTABLE;
-DO $$ BEGIN RAISE NOTICE 'Layer boundary'; END$$;-- OHM note: I think that osm_border_linestring was loaded by the import-osmborder functions,
--- therefore lacks the start_date and end_date fields specific to OHM.
--- they also lack names, so maybe aren't particularly useful? - GDA 2018-July
-
--- OHM note: these include NaturalEarth content which is not Historical
--- the question is pending, whether incluing non-OHM data is appropriate - GDA 2018-July
-
-
--- etldoc: ne_110m_admin_0_boundary_lines_land  -> boundary_z0
+DO $$ BEGIN RAISE NOTICE 'Layer boundary'; END$$;-- etldoc: ne_110m_admin_0_boundary_lines_land  -> boundary_z0
 
 CREATE OR REPLACE VIEW boundary_z0 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, ''::text AS start_date, ''::text AS end_date
