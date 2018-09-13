@@ -114,11 +114,12 @@ psql -U openmaptiles openmaptiles
 
 ### Import OHM PBF
 
-the Download OpenHistoricalMap planet file, and store the PBF file in the `./data` directory.
+Download the OpenHistoricalMap planet file, and store the PBF file in the `./data` directory.
 
 ```bash
 cd data
-wget http://download.geofabrik.de/europe/albania-latest.osm.pbf
+wget http://dump.openhistoricalmap.org/planet/ohm_planet_2018-09-11.osm.bz2
+bunzip2 ohm_planet_2018-09-11.osm.bz2
 ```
 
 [Import OpenStreetMap data](https://github.com/openmaptiles/import-osm) with the mapping rules from `build/mapping.yaml` (which has been created by `make`).
@@ -126,7 +127,9 @@ wget http://download.geofabrik.de/europe/albania-latest.osm.pbf
 ```bash
 docker-compose run import-osm
 
-make clean && make && docker-compose run import-sql
+make clean && make
+
+docker-compose run import-sql
 ```
 
 
@@ -139,17 +142,6 @@ psql -U openmaptiles openmaptiles
     \i build/ohm_postprocessing.sql
     \q
 ```
-
-
-### Generating Static Vector Tiles
-
-Now you are ready to **generate the vector tiles**. Using environment variables you can limit the bounding box and zoom levels of what you want to generate (`docker-compose.yml`).
-
-```
-docker-compose run generate-vectortiles
-```
-
-For OpenHistoricalMap, we prefer t erve the tiles live; see below.
 
 
 ### Vector Tile Rendering with Tessera
