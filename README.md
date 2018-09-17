@@ -92,7 +92,6 @@ Import external data from [OpenStreetMapData](http://openstreetmapdata.com/), [N
 docker-compose run --rm import-water
 docker-compose run --rm import-natural-earth
 docker-compose run --rm import-lakelines
-docker-compose run --rm import-wikidata
 ```
 
 Run our customized OHM border system, extracting OHM borders to CSV then importing that CSV. The "makecsv" step takes 25 minutes, but the "import" step takes a few seconds.
@@ -107,24 +106,19 @@ docker-compose run --rm import-osmborder
 The SQL file `build/ohm_preprocessing.sql` has some additional preprocessing steps specific to OpenHistoricalMap, e.g. emptying some data, creating custom fields, ...
 
 ```
-psql -U openmaptiles openmaptiles
+psql -h 127.0.0.1 -U openmaptiles openmaptiles
     \i build/ohm_preprocessing.sql
     \q
 ```
 
 ### Import OHM PBF
 
-Download the OpenHistoricalMap planet file, and store the PBF file in the `./data` directory.
+Download the OpenHistoricalMap planet file, and store the PBF file in the `./data` directory. Then [Import OpenStreetMap data](https://github.com/openmaptiles/import-osm) with the mapping rules from `build/mapping.yaml` (which has been created by `make`).
 
 ```bash
 cd data
-wget http://dump.openhistoricalmap.org/planet/ohm_planet_2018-09-11.osm.bz2
-bunzip2 ohm_planet_2018-09-11.osm.bz2
-```
+(instructions TBD)
 
-[Import OpenStreetMap data](https://github.com/openmaptiles/import-osm) with the mapping rules from `build/mapping.yaml` (which has been created by `make`).
-
-```bash
 docker-compose run import-osm
 
 make clean && make

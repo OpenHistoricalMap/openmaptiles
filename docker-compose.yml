@@ -28,7 +28,7 @@ services:
     networks:
     - postgres_conn
   import-osm:
-    image: "openmaptiles/import-osm:0.5"
+    build: https://github.com/OpenHistoricalMap/import-osm.git
     env_file: .env
     environment:
       DIFF_MODE: ${DIFF_MODE}

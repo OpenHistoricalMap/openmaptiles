@@ -810,8 +810,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, class text, start_date text, end
     ) AS zoom_levels
     WHERE geometry && bbox;
 $$ LANGUAGE SQL IMMUTABLE;
-DO $$ BEGIN RAISE NOTICE 'Layer boundary'; END$$;
--- etldoc: ne_110m_admin_0_boundary_lines_land  -> boundary_z0
+DO $$ BEGIN RAISE NOTICE 'Layer boundary'; END$$;-- etldoc: ne_110m_admin_0_boundary_lines_land  -> boundary_z0
 
 CREATE OR REPLACE VIEW boundary_z0 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
@@ -907,7 +906,6 @@ CREATE OR REPLACE VIEW boundary_z13 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
     FROM osm_border_linestring_gen1
 );
-
 
 -- etldoc: layer_boundary[shape=record fillcolor=lightpink, style="rounded,filled",
 -- etldoc:     label="<sql> layer_boundary |<z0> z0 |<z1_2> z1_2 | <z3> z3 | <z4> z4 | <z5> z5 | <z6> z6 | <z7> z7 | <z8> z8 | <z9> z9 |<z10> z10 |<z11> z11 |<z12> z12|<z13> z13+"]
@@ -1583,7 +1581,7 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
          -- etldoc: osm_building_relation -> layer_building:z14_
          -- Buildings built from relations
          SELECT member AS osm_id, geometry,
-                building,
+                name, building,
                 height, min_height,
                 start_date, end_date
          FROM osm_building_relation
@@ -1593,7 +1591,7 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
          -- etldoc: osm_building_associatedstreet -> layer_building:z14_
          -- Buildings in associatedstreet relations
          SELECT member AS osm_id, geometry,
-                building,
+                name, building,
                 height, min_height,
                 start_date, end_date
          FROM osm_building_associatedstreet
@@ -1602,7 +1600,7 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
          -- etldoc: osm_building_street -> layer_building:z14_
          -- Buildings in street relations
          SELECT member AS osm_id, geometry,
-                building,
+                name, building,
                 height, min_height,
                 start_date, end_date
          FROM osm_building_street
@@ -1612,7 +1610,7 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
          -- etldoc: osm_building_multipolygon -> layer_building:z14_
          -- Buildings that are inner/outer
          SELECT osm_id,geometry,
-                building,
+                name, building,
                 height, min_height,
                 start_date, end_date
          FROM osm_building_polygon obp
@@ -1621,7 +1619,7 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
          -- etldoc: osm_building_polygon -> layer_building:z14_
          -- Standalone buildings
          SELECT osm_id,geometry,
-                building,
+                name, building,
                 height, min_height,
                 start_date, end_date
          FROM osm_building_polygon
@@ -1629,11 +1627,12 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
 );
 
 CREATE OR REPLACE FUNCTION layer_building(bbox geometry, zoom_level int)
-RETURNS TABLE(geometry geometry, osm_id bigint, height int, min_height int, building text, start_date text, end_date text) AS $$
+RETURNS TABLE(geometry geometry, osm_id bigint, height varchar, min_height varchar, name varchar, building text, start_date text, end_date text) AS $$
     SELECT geometry,
         osm_id,
         height,
         min_height,
+        name,
         CASE WHEN building = 'yes' THEN '' ELSE building END,
         start_date,
         end_date
@@ -1642,7 +1641,7 @@ RETURNS TABLE(geometry geometry, osm_id bigint, height int, min_height int, buil
         SELECT
             osm_id, geometry,
             height, min_height,
-            building, start_date, end_date
+            name, building, start_date, end_date
         FROM osm_building_polygon_gen1
         WHERE zoom_level = 13 AND geometry && bbox
         UNION ALL
@@ -1650,13 +1649,12 @@ RETURNS TABLE(geometry geometry, osm_id bigint, height int, min_height int, buil
         SELECT DISTINCT ON (osm_id)
            osm_id, geometry,
            height, min_height,
-           building, start_date, end_date
+           name, building, start_date, end_date
         FROM osm_all_buildings
         WHERE zoom_level >= 14 AND geometry && bbox
     ) AS zoom_levels
     ORDER BY height ASC, ST_YMin(geometry) DESC;
 $$ LANGUAGE SQL IMMUTABLE;
-
 
 -- not handled: where a building outline covers building parts
 DO $$ BEGIN RAISE NOTICE 'Layer water_name'; END$$;-- OHM note: these include NaturalEarth content which is not Historical
@@ -1848,10 +1846,8 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
     -- etldoc: osm_water_lakeline ->  layer_water_name:z9_13
     -- etldoc: osm_water_lakeline ->  layer_water_name:z14_
     SELECT
-        CASE WHEN osm_id<0 THEN -osm_id*10+4
-            ELSE osm_id*10+1
-        END AS osm_id_hash,
-        geometry, name,
+        osm_id, geometry,
+        name,
         COALESCE(NULLIF(name_en, ''), name) AS name_en,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
@@ -1865,10 +1861,8 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
     -- etldoc: osm_water_point ->  layer_water_name:z14_
     UNION ALL
     SELECT
-        CASE WHEN osm_id<0 THEN -osm_id*10+4
-            ELSE osm_id*10+1
-        END AS osm_id_hash,
-        geometry, name,
+        osm_id, geometry,
+        name,
         COALESCE(NULLIF(name_en, ''), name) AS name_en,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
@@ -1883,7 +1877,8 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
     -- etldoc: osm_marine_point ->  layer_water_name:z9_13
     -- etldoc: osm_marine_point ->  layer_water_name:z14_
     UNION ALL
-    SELECT osm_id*10, geometry, name,
+    SELECT osm_id, geometry,
+        name,
         COALESCE(NULLIF(name_en, ''), name) AS name_en,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
@@ -2338,7 +2333,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         COALESCE(NULLIF(name_en, ''), name) AS name_en,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
-        place, "rank", normalize_capital_level(capital) AS capital,
+        place::city_place, "rank", normalize_capital_level(capital) AS capital,
         start_date, end_date
     FROM osm_city_point
     WHERE geometry && bbox
@@ -2350,7 +2345,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         COALESCE(NULLIF(name_en, ''), name) AS name_en,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
-        place,
+        place::city_place,
         COALESCE("rank", gridrank + 10),
         normalize_capital_level(capital) AS capital,
         start_date, end_date
@@ -2359,21 +2354,21 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
       COALESCE(NULLIF(name_en, ''), name) AS name_en,
       COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
       tags,
-      place, "rank", capital,
+      place::city_place, "rank", capital,
       start_date, end_date,
       row_number() OVER (
         PARTITION BY LabelGrid(geometry, 128 * pixel_width)
         ORDER BY "rank" ASC NULLS LAST,
-        place ASC NULLS LAST,
+        place::city_place ASC NULLS LAST,
         population DESC NULLS LAST,
         length(name) ASC
       )::int AS gridrank
         FROM osm_city_point
         WHERE geometry && bbox
-          AND ((zoom_level = 7 AND place <= 'town'::city_place
-            OR (zoom_level BETWEEN 8 AND 10 AND place <= 'village'::city_place)
+          AND ((zoom_level = 7 AND place::city_place <= 'town'::city_place
+            OR (zoom_level BETWEEN 8 AND 10 AND place::city_place <= 'village'::city_place)
 
-            OR (zoom_level BETWEEN 11 AND 13 AND place <= 'suburb'::city_place)
+            OR (zoom_level BETWEEN 11 AND 13 AND place::city_place <= 'suburb'::city_place)
             OR (zoom_level >= 14)
           ))
     ) AS ranked_places
@@ -3264,7 +3259,7 @@ SELECT update_osm_poi_point_agg();
 CREATE OR REPLACE FUNCTION layer_poi(bbox geometry, zoom_level integer, pixel_width numeric)
 RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de text, tags hstore,
     class text, subclass text, start_date text, end_date text, agg_stop integer, "rank" int) AS $$
-    SELECT osm_id_hash AS osm_id, geometry, NULLIF(name, '') AS name,
+    SELECT osm_id, geometry, NULLIF(name, '') AS name,
         COALESCE(NULLIF(name_en, ''), name) AS name_en,
         COALESCE(NULLIF(name_de, ''), name, name_en) AS name_de,
         tags,
@@ -3288,8 +3283,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         SELECT osm_id, geometry, name, name_en, name_de, tags, subclass, mapping_key,
             information, religion,
             start_date, end_date,
-            agg_stop,
-            osm_id*10 AS osm_id_hash
+            agg_stop
             FROM osm_poi_point
             WHERE geometry && bbox
                 AND zoom_level BETWEEN 12 AND 13
@@ -3301,8 +3295,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         SELECT osm_id, geometry, name, name_en, name_de, tags, subclass, mapping_key,
             information, religion,
             start_date, end_date,
-            agg_stop,
-            osm_id*10 AS osm_id_hash
+            agg_stop
             FROM osm_poi_point
             WHERE geometry && bbox
                 AND zoom_level >= 14
@@ -3313,10 +3306,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         SELECT osm_id, geometry, name, name_en, name_de, tags, subclass, mapping_key,
             information, religion,
             start_date, end_date,
-            NULL::INTEGER AS agg_stop,
-            CASE WHEN osm_id<0 THEN -osm_id*10+4
-                ELSE osm_id*10+1
-            END AS osm_id_hash
+            NULL::INTEGER AS agg_stop
         FROM osm_poi_polygon
             WHERE geometry && bbox
                 AND zoom_level BETWEEN 12 AND 13
@@ -3328,10 +3318,7 @@ RETURNS TABLE(osm_id bigint, geometry geometry, name text, name_en text, name_de
         SELECT osm_id, geometry, name, name_en, name_de, tags, subclass, mapping_key,
             information, religion,
             start_date, end_date,
-            NULL::INTEGER AS agg_stop,
-            CASE WHEN osm_id<0 THEN -osm_id*10+4
-                ELSE osm_id*10+1
-            END AS osm_id_hash
+            NULL::INTEGER AS agg_stop
         FROM osm_poi_polygon
             WHERE geometry && bbox
                 AND zoom_level >= 14

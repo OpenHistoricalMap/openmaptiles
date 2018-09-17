@@ -27,7 +27,7 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
          -- etldoc: osm_building_relation -> layer_building:z14_
          -- Buildings built from relations
          SELECT member AS osm_id, geometry,
-                building,
+                name, building,
                 height, min_height,
                 start_date, end_date
          FROM osm_building_relation
@@ -37,7 +37,7 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
          -- etldoc: osm_building_associatedstreet -> layer_building:z14_
          -- Buildings in associatedstreet relations
          SELECT member AS osm_id, geometry,
-                building,
+                name, building,
                 height, min_height,
                 start_date, end_date
          FROM osm_building_associatedstreet
@@ -46,7 +46,7 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
          -- etldoc: osm_building_street -> layer_building:z14_
          -- Buildings in street relations
          SELECT member AS osm_id, geometry,
-                building,
+                name, building,
                 height, min_height,
                 start_date, end_date
          FROM osm_building_street
@@ -56,7 +56,7 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
          -- etldoc: osm_building_multipolygon -> layer_building:z14_
          -- Buildings that are inner/outer
          SELECT osm_id,geometry,
-                building,
+                name, building,
                 height, min_height,
                 start_date, end_date
          FROM osm_building_polygon obp
@@ -65,7 +65,7 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
          -- etldoc: osm_building_polygon -> layer_building:z14_
          -- Standalone buildings
          SELECT osm_id,geometry,
-                building,
+                name, building,
                 height, min_height,
                 start_date, end_date
          FROM osm_building_polygon
@@ -73,11 +73,12 @@ CREATE OR REPLACE VIEW osm_all_buildings AS (
 );
 
 CREATE OR REPLACE FUNCTION layer_building(bbox geometry, zoom_level int)
-RETURNS TABLE(geometry geometry, osm_id bigint, height varchar, min_height varchar, building text, start_date text, end_date text) AS $$
+RETURNS TABLE(geometry geometry, osm_id bigint, height varchar, min_height varchar, name varchar, building text, start_date text, end_date text) AS $$
     SELECT geometry,
         osm_id,
         height,
         min_height,
+        name,
         CASE WHEN building = 'yes' THEN '' ELSE building END,
         start_date,
         end_date
@@ -86,7 +87,7 @@ RETURNS TABLE(geometry geometry, osm_id bigint, height varchar, min_height varch
         SELECT
             osm_id, geometry,
             height, min_height,
-            building, start_date, end_date
+            name, building, start_date, end_date
         FROM osm_building_polygon_gen1
         WHERE zoom_level = 13 AND geometry && bbox
         UNION ALL
@@ -94,7 +95,7 @@ RETURNS TABLE(geometry geometry, osm_id bigint, height varchar, min_height varch
         SELECT DISTINCT ON (osm_id)
            osm_id, geometry,
            height, min_height,
-           building, start_date, end_date
+           name, building, start_date, end_date
         FROM osm_all_buildings
         WHERE zoom_level >= 14 AND geometry && bbox
     ) AS zoom_levels

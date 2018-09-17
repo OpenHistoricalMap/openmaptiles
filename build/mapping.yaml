@@ -166,6 +166,7 @@ tables:
     - {name: geometry, type: validated_geometry}
     - {name: area, type: area}
     - {name: webmerc_area, type: webmerc_area}
+    - {key: name, name: name, type: string}
     - {from_member: true, key: building, name: building, type: string}
     - {from_member: true, key: 'building:part', name: buildingpart, type: string}
     - {from_member: true, key: 'building:height', name: buildingheight, type: string}
@@ -199,6 +200,7 @@ tables:
     - {name: geometry, type: validated_geometry}
     - {name: area, type: area}
     - {name: webmerc_area, type: webmerc_area}
+    - {key: name, name: name, type: string}
     - {from_member: true, key: building, name: building, type: string}
     - {from_member: true, key: 'building:part', name: buildingpart, type: string}
     - {from_member: true, key: 'building:height', name: buildingheight, type: string}
@@ -229,6 +231,7 @@ tables:
     - {name: geometry, type: validated_geometry}
     - {name: area, type: area}
     - {name: webmerc_area, type: webmerc_area}
+    - {key: name, name: name, type: string}
     - {key: building, name: building, type: string}
     - {key: 'building:part', name: buildingpart, type: string}
     - {key: 'building:height', name: buildingheight, type: string}
@@ -257,6 +260,7 @@ tables:
     - {name: geometry, type: validated_geometry}
     - {name: area, type: area}
     - {name: webmerc_area, type: webmerc_area}
+    - {key: name, name: name, type: string}
     - {from_member: true, key: building, name: building, type: string}
     - {from_member: true, key: 'building:part', name: buildingpart, type: string}
     - {from_member: true, key: 'building:height', name: buildingheight, type: string}
@@ -290,6 +294,7 @@ tables:
     - {name: geometry, type: validated_geometry}
     - {name: area, type: area}
     - {name: webmerc_area, type: webmerc_area}
+    - {key: name, name: name, type: string}
     - {from_member: true, key: building, name: building, type: string}
     - {from_member: true, key: 'building:part', name: buildingpart, type: string}
     - {from_member: true, key: 'building:height', name: buildingheight, type: string}

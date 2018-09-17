@@ -17,6 +17,9 @@ tables:
       type: area
     - name: webmerc_area
       type: webmerc_area
+    - name: name
+      key: name
+      type: string
     - name: building
       key: building
       type: string
@@ -80,6 +83,9 @@ tables:
       type: area
     - name: webmerc_area
       type: webmerc_area
+    - name: name
+      key: name
+      type: string
     - name: building
       key: building
       type: string
@@ -174,6 +180,9 @@ tables:
       type: area
     - name: webmerc_area
       type: webmerc_area
+    - name: name
+      key: name
+      type: string
     - name: building
       key: building
       type: string
@@ -268,6 +277,9 @@ tables:
       type: area
     - name: webmerc_area
       type: webmerc_area
+    - name: name
+      key: name
+      type: string
     - name: building
       key: building
       type: string
@@ -362,6 +374,9 @@ tables:
       type: area
     - name: webmerc_area
       type: webmerc_area
+    - name: name
+      key: name
+      type: string
     - name: building
       key: building
       type: string
