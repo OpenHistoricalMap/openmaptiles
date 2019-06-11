@@ -33,7 +33,7 @@ help:
 	@echo "  make pgclimb-list-tables             # list PostgreSQL public schema tables"
 	@echo "  cat  .env                            # list PG database and MIN_ZOOM and MAX_ZOOM informations"
 	@echo "  cat ./quickstart.log                 # backup  of the last ./quickstart.sh "
-	@echo "  make help                            # help about avaialable commands"
+	@echo "  make help                            # help about available commands"
 	@echo "=============================================================================="
 
 .PHONY: build/openmaptiles.tm2source/data.yml build/mapping.yaml build/tileset.sql
