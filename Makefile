@@ -36,7 +36,7 @@ help:
 	@echo "  make help                            # help about avaialable commands"
 	@echo "=============================================================================="
 
-.PHONY: build/openmaptiles.tm2source/data.yml
+.PHONY: build/openmaptiles.tm2source/data.yml build/mapping.yaml build/tileset.sql
 
 build/openmaptiles.tm2source/data.yml:
 	mkdir -p build/openmaptiles.tm2source && generate-tm2source openmaptiles.yaml --host="localhost" --port=5432 --database="openmaptiles" --user="openmaptiles" --password="openmaptiles" > build/openmaptiles.tm2source/data.yml

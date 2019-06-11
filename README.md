@@ -105,10 +105,8 @@ docker-compose run --rm import-osmborder
 
 The SQL file `build/ohm_preprocessing.sql` has some additional preprocessing steps specific to OpenHistoricalMap, e.g. emptying some data, creating custom fields, ...
 
-```
-psql -h 127.0.0.1 -U openmaptiles openmaptiles
-    \i build/ohm_preprocessing.sql
-    \q
+```bash
+psql -h 127.0.0.1 -U openmaptiles openmaptiles -f build/ohm_preprocessing.sql
 ```
 
 ### Import OHM PBF
@@ -119,11 +117,11 @@ Download the OpenHistoricalMap planet file, and store the PBF file in the `./dat
 cd data
 (instructions TBD)
 
-docker-compose run import-osm
+docker-compose run --rm import-osm
 
 make clean && make
 
-docker-compose run import-sql
+docker-compose run --rm import-sql
 ```
 
 
@@ -131,10 +129,8 @@ docker-compose run import-sql
 
 The SQL file `build/ohm_postprocessing.sql` has some additional postprocessing steps specific to OpenHistoricalMap, e.g. emptying some data, creating custom fields, ...
 
-```
-psql -U openmaptiles openmaptiles
-    \i build/ohm_postprocessing.sql
-    \q
+```bash
+psql -U openmaptiles openmaptiles -f build/ohm_postprocessing.sql
 ```
 
 
@@ -147,7 +143,7 @@ node_modules/.bin/tessera tmsource://./build/openmaptiles.tm2source
 
 ## Updating OHM
 
-A service wrapper runs `docker-compose run --rm update-osm` constantly, 24x7. As such, there shoudl be no additional intervention necessary. See the *openhistoricaltiles* repository for more details on this service wrapper.
+A service wrapper runs `docker-compose run --rm update-osm` constantly, 24x7. As such, there should be no additional intervention necessary. See the *openhistoricaltiles* repository for more details on this service wrapper.
 
 
 ## License

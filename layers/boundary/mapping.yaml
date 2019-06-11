@@ -1,0 +1,92 @@
+tags:
+  include:
+    - dispute
+    - border_status
+    - natural
+
+generalized_tables:
+  border_polygon_gen10:
+    source: border_polygon_gen9
+    sql_filter: area > power(ZRES3, 2)
+    tolerance: ZRES4
+
+  border_polygon_gen9:
+    source: border_polygon_gen8
+    sql_filter: area > power(ZRES4, 2)
+    tolerance: ZRES5
+
+  border_polygon_gen8:
+    source: border_polygon_gen7
+    sql_filter: area > power(ZRES5, 2)
+    tolerance: ZRES6
+
+  border_polygon_gen7:
+    source: border_polygon_gen6
+    sql_filter: area > power(ZRES6, 2)
+    tolerance: ZRES7
+
+  border_polygon_gen6:
+    source: border_polygon_gen5
+    sql_filter: area > power(ZRES7, 2)
+    tolerance: ZRES8
+
+  border_polygon_gen5:
+    source: border_polygon_gen4
+    sql_filter: area > power(ZRES8, 2)
+    tolerance: ZRES9
+
+  border_polygon_gen4:
+    source: border_polygon_gen3
+    sql_filter: area > power(ZRES9, 2)
+    tolerance: ZRES10
+
+  border_polygon_gen3:
+    source: border_polygon_gen2
+    sql_filter: area > power(ZRES10, 2)
+    tolerance: ZRES11
+
+  border_polygon_gen2:
+    source: border_polygon_gen1
+    sql_filter: area > power(ZRES11, 2)
+    tolerance: ZRES12
+  
+  border_polygon_gen1:
+    source: border_polygon
+    sql_filter: area > power(ZRES12, 2) AND ST_IsValid(geometry)
+    tolerance: ZRES13
+
+tables:
+  border_polygon:
+    type: polygon
+    fields:
+      - name: osm_id
+        type: id
+      - name: geometry
+        type: geometry
+      - name: area
+        type: area
+      - name: admin_level
+        key: admin_level
+        type: integer
+      - name: name
+        key: name
+        type: string
+      - name: start_date
+        key: start_date
+        type: string
+      - name: end_date
+        key: end_date
+        type: string
+      - name: disputed
+        key: disputed
+        type: bool
+      - name: maritime
+        key: maritime
+        type: bool
+      - name: tags
+        type: hstore_tags
+    mapping:
+      boundary:
+        - administrative
+    relation_types:
+      - boundary

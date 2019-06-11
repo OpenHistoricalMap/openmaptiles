@@ -2,7 +2,7 @@
 
 CREATE OR REPLACE VIEW boundary_z0 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen10
+    FROM osm_border_polygon_gen10
 );
 
 -- etldoc: ne_50m_admin_0_boundary_lines_land  -> boundary_z1
@@ -10,7 +10,7 @@ CREATE OR REPLACE VIEW boundary_z0 AS (
 
 CREATE OR REPLACE VIEW boundary_z1 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen10
+    FROM osm_border_polygon_gen10
 );
 
 
@@ -19,7 +19,7 @@ CREATE OR REPLACE VIEW boundary_z1 AS (
 
 CREATE OR REPLACE VIEW boundary_z3 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen10
+    FROM osm_border_polygon_gen10
 );
 
 
@@ -29,7 +29,7 @@ CREATE OR REPLACE VIEW boundary_z3 AS (
 
 CREATE OR REPLACE VIEW boundary_z4 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen10
+    FROM osm_border_polygon_gen10
 );
 
 -- etldoc: ne_10m_admin_0_boundary_lines_land -> boundary_z5
@@ -38,61 +38,61 @@ CREATE OR REPLACE VIEW boundary_z4 AS (
 
 CREATE OR REPLACE VIEW boundary_z5 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen9
+    FROM osm_border_polygon_gen9
 );
 
 -- etldoc: osm_border_linestring_gen8 -> boundary_z6
 CREATE OR REPLACE VIEW boundary_z6 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen8
+    FROM osm_border_polygon_gen8
     WHERE admin_level <= 4
 );
 
 -- etldoc: osm_border_linestring_gen7 -> boundary_z7
 CREATE OR REPLACE VIEW boundary_z7 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen7
+    FROM osm_border_polygon_gen7
     WHERE admin_level <= 4
 );
 
 -- etldoc: osm_border_linestring_gen6 -> boundary_z8
 CREATE OR REPLACE VIEW boundary_z8 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen6
+    FROM osm_border_polygon_gen6
     WHERE admin_level <= 4
 );
 
 -- etldoc: osm_border_linestring_gen5 -> boundary_z9
 CREATE OR REPLACE VIEW boundary_z9 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen5
+    FROM osm_border_polygon_gen5
     WHERE admin_level <= 6
 );
 
 -- etldoc: osm_border_linestring_gen4 -> boundary_z10
 CREATE OR REPLACE VIEW boundary_z10 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen4
+    FROM osm_border_polygon_gen4
     WHERE admin_level <= 6
 );
 
 -- etldoc: osm_border_linestring_gen3 -> boundary_z11
 CREATE OR REPLACE VIEW boundary_z11 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen3
+    FROM osm_border_polygon_gen3
     WHERE admin_level <= 8
 );
 
 -- etldoc: osm_border_linestring_gen2 -> boundary_z12
 CREATE OR REPLACE VIEW boundary_z12 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen2
+    FROM osm_border_polygon_gen2
 );
 
 -- etldoc: osm_border_linestring_gen1 -> boundary_z12
 CREATE OR REPLACE VIEW boundary_z13 AS (
     SELECT osm_id, geometry, admin_level, disputed, maritime, name, start_date, end_date
-    FROM osm_border_linestring_gen1
+    FROM osm_border_polygon_gen1
 );
 
 -- etldoc: layer_boundary[shape=record fillcolor=lightpink, style="rounded,filled",

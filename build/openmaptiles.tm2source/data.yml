@@ -1,7 +1,11 @@
 Layer:
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -15,12 +19,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: water
-  properties: {buffer-size: 4}
+  properties:
+    buffer-size: 4
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -65,12 +74,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: waterway
-  properties: {buffer-size: 4}
+  properties:
+    buffer-size: 4
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -84,12 +98,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: landcover
-  properties: {buffer-size: 4}
+  properties:
+    buffer-size: 4
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -103,12 +122,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: landuse
-  properties: {buffer-size: 4}
+  properties:
+    buffer-size: 4
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -153,12 +177,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: mountain_peak
-  properties: {buffer-size: 64}
+  properties:
+    buffer-size: 64
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -172,12 +201,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: park
-  properties: {buffer-size: 4}
+  properties:
+    buffer-size: 4
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -191,12 +225,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: boundary
-  properties: {buffer-size: 4}
+  properties:
+    buffer-size: 4
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -210,12 +249,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: aeroway
-  properties: {buffer-size: 4}
+  properties:
+    buffer-size: 4
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -230,12 +274,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: transportation
-  properties: {buffer-size: 4}
+  properties:
+    buffer-size: 4
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -249,12 +298,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: building
-  properties: {buffer-size: 4}
+  properties:
+    buffer-size: 4
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: osm_id
@@ -299,12 +353,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: water_name
-  properties: {buffer-size: 256}
+  properties:
+    buffer-size: 256
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -350,12 +409,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: transportation_name
-  properties: {buffer-size: 8}
+  properties:
+    buffer-size: 8
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: osm_id
@@ -400,12 +464,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: place
-  properties: {buffer-size: 256}
+  properties:
+    buffer-size: 256
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -419,12 +488,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: housenumber
-  properties: {buffer-size: 8}
+  properties:
+    buffer-size: 8
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: osm_id
@@ -469,12 +543,17 @@ Layer:
     type: postgis
     user: openmaptiles
   id: poi
-  properties: {buffer-size: 64}
+  properties:
+    buffer-size: 64
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 - Datasource:
     dbname: openmaptiles
-    extent: [-20037508.34, -20037508.34, 20037508.34, 20037508.34]
+    extent:
+    - -20037508.34
+    - -20037508.34
+    - 20037508.34
+    - 20037508.34
     geometry_field: geometry
     host: localhost
     key_field: ''
@@ -519,13 +598,22 @@ Layer:
     type: postgis
     user: openmaptiles
   id: aerodrome_label
-  properties: {buffer-size: 64}
+  properties:
+    buffer-size: 64
   srs: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0
     +units=m +nadgrids=@null +wktext +no_defs +over
 attribution: <a href="https://www.openmaptiles.org/" target="_blank">&copy; OpenMapTiles</a>
   <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap
   contributors</a>
-center: [-12.2168, 28.6135, 4]
+bounds:
+- -180
+- -90
+- 180
+- 90
+center:
+- -12.2168
+- 28.6135
+- 4
 description: A tileset showcasing all layers in OpenMapTiles. https://openmaptiles.org
 maxzoom: 14
 minzoom: 0
