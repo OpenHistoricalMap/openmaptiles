@@ -7,9 +7,10 @@ data.xml
 # quickstart
 quickstart.log
 
-
 # imput / output data
 data/*
+LOCKFILE
+*.pgdump
 
 # input wikidata
 wikidata/*
