@@ -3,6 +3,7 @@
 
 CREATE OR REPLACE FUNCTION landcover_class(landuse VARCHAR, "natural" VARCHAR, leisure VARCHAR, wetland VARCHAR) RETURNS TEXT AS $$
     SELECT CASE
+        WHEN "natural" IN ('land') THEN 'land'
         WHEN landuse IN ('farmland', 'farm', 'orchard', 'vineyard', 'plant_nursery') THEN 'farmland'
         WHEN "natural" IN ('glacier', 'ice_shelf') THEN 'ice'
         WHEN "natural"='wood' OR landuse IN ('forest') THEN 'wood'
@@ -143,5 +144,12 @@ RETURNS TABLE(osm_id bigint, geometry geometry, class text, subclass text, start
         -- etldoc:  landcover_z14 -> layer_landcover:z14_
         SELECT *
         FROM landcover_z14 WHERE zoom_level >= 14 AND geometry && bbox
+        UNION ALL
+        SELECT
+            osm_id, geometry,
+            'land' AS landuse, 'land' as "natural",
+            NULL::varchar AS leisure, NULL::varchar AS wetland,
+            start_date, end_date
+        FROM islands_for_tiles WHERE geometry && bbox
     ) AS zoom_levels;
 $$ LANGUAGE SQL IMMUTABLE;
